@@ -18,8 +18,6 @@ async function onSubmit(e) {
   // Sends GET request to get city, state, and lat & long values
   let getCoordinates = await getLocation(zip);
 
-  //   let city = "San Francisco";
-  //   let state = "CA";
   let city = getCoordinates.city;
   let state = getCoordinates.regionCode;
   let lat = getCoordinates.latitude;
@@ -52,13 +50,11 @@ async function getWeather(lat, long) {
   const date = `${
     today.getMonth() + 1
   }/${today.getDate()}/${today.getFullYear()}`;
-  console.log(date);
 
   try {
     let weatherURL = `https://se-weather-api.herokuapp.com/api/v1/forecast?latitude=${lat}&longitude=-${long}&date=${date}`;
     let res = await fetch(weatherURL);
     let data = await res.json();
-    console.log(data);
 
     return data.daily.data;
   } catch (error) {
