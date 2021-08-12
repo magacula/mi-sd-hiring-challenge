@@ -1,0 +1,20 @@
+ul {
+  list-style-type: none;
+}
+
+#weatherContainer {
+  margin-top: 4rem;
+}
+
+#forecastList {
+  display: flex;
+}
+
+#forecastList li {
+  margin: 0 2rem;
+}
+
+#weatherInfo {
+  display: flex;
+  padding: 0 2rem;
+}
