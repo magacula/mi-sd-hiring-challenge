@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html lang="">
+  <head>
+    <title>Movable Ink</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
 
-<head>
-  <title>Movable Ink</title>
-  <meta charset="UTF-8" />
-</head>
-
-<body>
-  <div id="app"></div>
-</body>
-<script src="src/app.js"></script>
-
+  <body>
+    <div id="app">
+      <h1>Get Your City's Weather Forecast</h1>
+      <div id="formContainer">
+        <form id="search" action="">
+          <input type="number" placeholder="Enter zip code..." />
+          <button>Enter</button>
+        </form>
+      </div>
+      <div id="weatherContainer">
+        <div id="city"></div>
+        <ul id="forecastList">
+          <!-- The structure of a each list item when rendered -->
+          <!-- 
+            <li>
+            <h3 id="date">Today:</h3>
+            <div id="weatherInfo">
+              <div>
+                <img src="sunnyImg" alt="">
+              </div>
+              <div>
+                <p>Clear</p>
+                <p>95° / 69°</p>
+              </div>
+            </div>
+          </li>  -->
+        </ul>
+        <!-- <img src="./img/cloudy.png" alt="" /> -->
+      </div>
+    </div>
+  </body>
+  <script src="src/app.js"></script>
 </html>
