@@ -1,4 +1,5 @@
 // import { convertDate } from "./utils";
+import { isUSAZipCode, allCharactersSame } from "./utils";
 import cloudy from "../img/cloudy.png";
 import rain from "../img/rain.png";
 import snow from "../img/snow.png";
@@ -18,19 +19,32 @@ async function onSubmit(e) {
   /***** FIX #1: Clear text filed so they cant make the same API call  ******/
   form.reset();
 
-  // Sends GET request to retrieve city, state, and lat & long values
-  // await will stop the code execution at this point of the function, until promise has been
-  // fulfilled (when the data has been fetched)
-  let getCoordinates = await getLocation(zip);
+  if (validateZip(zip)) {
+    // Sends GET request to retrieve city, state, and lat & long values
+    // await will stop the code execution at this point of the function, until promise has been
+    // fulfilled (when the data has been fetched)
+    let getCoordinates = await getLocation(zip);
 
-  let city = getCoordinates.city;
-  let state = getCoordinates.regionCode;
-  let lat = getCoordinates.latitude;
-  let long = getCoordinates.longitude;
+    let city = getCoordinates.city;
+    let state = getCoordinates.regionCode;
+    let lat = getCoordinates.latitude;
+    let long = getCoordinates.longitude;
 
-  let weather = await getWeather(lat, long);
-  console.log("weather", weather);
-  renderForecast(city, state, weather);
+    let weather = await getWeather(lat, long);
+    console.log("weather", weather);
+    renderForecast(city, state, weather);
+  } else {
+    alert("You entered an invalid zip code");
+  }
+}
+
+function validateZip(zip) {
+  if (isUSAZipCode(zip) && !allCharactersSame(zip)) {
+    console.log("Zipcode is valid");
+    return true;
+  }
+  console.log("Invalid Zip");
+  return false;
 }
 
 /***** FIX 2: functions fetches data when specifying the URL we want to hit  ******/
