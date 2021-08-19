@@ -1,5 +1,10 @@
 // import { convertDate } from "./utils";
-import { isUSAZipCode, allCharactersSame } from "./utils";
+import {
+  isUSAZipCode,
+  allCharactersSame,
+  zipDoesNotExist,
+  clear,
+} from "./utils";
 import cloudy from "../img/cloudy.png";
 import rain from "../img/rain.png";
 import snow from "../img/snow.png";
@@ -15,24 +20,37 @@ async function onSubmit(e) {
 
   // retrieve zipcode
   let zip = form.elements[0].value;
+  console.log(form.elements[0].value);
+
+  clear(form);
 
   /***** FIX #1: Clear text filed so they cant make the same API call  ******/
   form.reset();
 
+  // validate zipcode in order to proceed to make API calls
   if (validateZip(zip)) {
-    // Sends GET request to retrieve city, state, and lat & long values
+    // Sends GET request to rerieve city, state, and lat & long values
     // await will stop the code execution at this point of the function, until promise has been
     // fulfilled (when the data has been fetched)
     let getCoordinates = await getLocation(zip);
 
-    let city = getCoordinates.city;
-    let state = getCoordinates.regionCode;
-    let lat = getCoordinates.latitude;
-    let long = getCoordinates.longitude;
+    // if the zipcode entered does not exist alert the user (when an empty object is returned)
+    if (zipDoesNotExist(getCoordinates)) {
+      alert("Sorry the zipcode you entered does not exist");
+    } else {
+      let city = getCoordinates.city;
+      let state = getCoordinates.regionCode;
+      let lat = getCoordinates.latitude;
+      let long = getCoordinates.longitude;
+      console.log("lat:", lat);
+      console.log("long:", long);
 
-    let weather = await getWeather(lat, long);
-    console.log("weather", weather);
-    renderForecast(city, state, weather);
+      let weather = await getWeather(lat, long);
+      console.log("weather", weather);
+      renderForecast(city, state, weather);
+    }
+  } else if (zip === "") {
+    alert("You did not enter a zipcode");
   } else {
     alert("You entered an invalid zip code");
   }
