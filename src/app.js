@@ -22,6 +22,7 @@ async function onSubmit(e) {
   let zip = form.elements[0].value;
   console.log(form.elements[0].value);
 
+  // clears UI once after submitting a new zipcode
   clear(form);
 
   /***** FIX #1: Clear text filed so they cant make the same API call  ******/
@@ -42,8 +43,8 @@ async function onSubmit(e) {
       let state = getCoordinates.regionCode;
       let lat = getCoordinates.latitude;
       let long = getCoordinates.longitude;
-      console.log("lat:", lat);
-      console.log("long:", long);
+      // console.log("lat:", lat);
+      // console.log("long:", long);
 
       let weather = await getWeather(lat, long);
       console.log("weather", weather);
@@ -71,7 +72,7 @@ async function fetchData(url) {
   try {
     let res = await fetch(url);
     let data = await res.json();
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     console.log(error);
@@ -82,6 +83,7 @@ async function fetchData(url) {
 async function getLocation(zip) {
   let geoURL = `https://se-weather-api.herokuapp.com/api/v1/geo?zip_code=${zip}`;
   let getGeoData = await fetchData(geoURL);
+  console.log(getGeoData);
   return getGeoData;
 }
 
@@ -94,6 +96,7 @@ async function getWeather(lat, long) {
   const date = `${
     today.getMonth() + 1
   }/${today.getDate()}/${today.getFullYear()}`;
+  console.log("DATE", date);
 
   let weatherURL = `https://se-weather-api.herokuapp.com/api/v1/forecast?latitude=${lat}&longitude=-${long}&date=${date}`;
   let getWeatherData = await fetchData(weatherURL);
@@ -125,6 +128,14 @@ function renderForecast(city, state, weather) {
   let dayOfTheWeekIndex = new Date().getDay() - 1;
   console.log(dayOfTheWeekIndex);
 
+  // store images in object
+  const img = {
+    cloudy: cloudy,
+    rain: rain,
+    snow: snow,
+    sunny: sunny,
+  };
+
   // we subtract 2 from the end since we are only getting the 3-day forecast
   // we can take out if we want to get the 5-day (what the api gives us back)
   for (
@@ -141,7 +152,8 @@ function renderForecast(city, state, weather) {
     }</h3>
     <div id="weatherInfo">
       <div>
-      <img src="${weather[i - dayOfTheWeekIndex].icon}" alt="" />
+    
+      <img src="${img[`${weather[i - dayOfTheWeekIndex].icon}`]}" alt="" /> 
       </div>
       <div>
         <p>${weather[i - dayOfTheWeekIndex].icon}</p>
